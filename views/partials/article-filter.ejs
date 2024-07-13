@@ -1,0 +1,128 @@
+<!-- >>> START <<< -->
+
+<!-- article-filter.ejs -->
+
+<% if (articles.length > 0) { %>
+<div class="d-flex mb-3 ms-3 mt-3 justify-content-center">
+  <button class="rounded-pill px-3 py-1 mt-auto fw-medium me-3 ms-3 filter-all">
+    All
+  </button>
+  <button class="rounded-pill px-3 py-1 mt-auto fw-medium me-3 filter-selfHelp">
+    Self-help
+  </button>
+  <button class="rounded-pill px-3 py-1 mt-auto fw-medium me-3 filter-acadTips">
+    Academic Tips
+  </button>
+  <button
+    class="rounded-pill px-3 py-1 mt-auto fw-medium me-3 filter-sgStories"
+  >
+    SG stories
+  </button>
+  <button
+    class="rounded-pill px-3 py-1 mt-auto fw-medium me-3 filter-careerInsights"
+  >
+    Career insights
+  </button>
+  <button
+    class="rounded-pill px-3 py-1 mt-auto fw-medium me-3 filter-sgInsights"
+  >
+    SG insights
+  </button>
+</div>
+<% } else { %>
+<h5 class="fw-bold mb-3 ms-3 text-center mt-5" style="color: #1c3c40">
+  SG Odyssey has no articles yet, come back again later!
+</h5>
+<% } %>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const allButton = document.querySelector(".filter-all");
+    const selfHelpButton = document.querySelector(".filter-selfHelp");
+    const acadTipsButton = document.querySelector(".filter-acadTips");
+    const sgStoriesButton = document.querySelector(".filter-sgStories");
+    const careerInsightsButton = document.querySelector(
+      ".filter-careerInsights"
+    );
+    const sgInsightsButton = document.querySelector(".filter-sgInsights");
+    const blogContainer = document.getElementById("articleContainer");
+    const blogs = document.querySelectorAll(".writer-blog-card");
+    if (allButton) allButton.addEventListener("click", showAllBlogs);
+    if (selfHelpButton) selfHelpButton.addEventListener("click", showSelfHelp);
+    if (acadTipsButton) acadTipsButton.addEventListener("click", showAcadTips);
+    if (sgStoriesButton)
+      sgStoriesButton.addEventListener("click", showSgStories);
+    if (careerInsightsButton)
+      careerInsightsButton.addEventListener("click", showCareerInsights);
+    if (sgInsightsButton)
+      sgInsightsButton.addEventListener("click", showSgInsights);
+    function showAllBlogs() {
+      blogs.forEach((blog) => {
+        blog.style.display = "block";
+      });
+    }
+
+    function showSelfHelp() {
+      blogs.forEach((blog) => {
+        if (
+          blog.querySelector(".blog-tag").textContent.trim() !== "Self-Help"
+        ) {
+          blog.style.display = "none";
+        } else {
+          blog.style.display = "block";
+        }
+      });
+    }
+
+    function showAcadTips() {
+      blogs.forEach((blog) => {
+        if (
+          blog.querySelector(".blog-tag").textContent.trim() !== "Academic Tips"
+        ) {
+          blog.style.display = "none";
+        } else {
+          blog.style.display = "block";
+        }
+      });
+    }
+
+    function showSgStories() {
+      blogs.forEach((blog) => {
+        if (
+          blog.querySelector(".blog-tag").textContent.trim() !== "SG Stories"
+        ) {
+          blog.style.display = "none";
+        } else {
+          blog.style.display = "block";
+        }
+      });
+    }
+
+    function showCareerInsights() {
+      blogs.forEach((blog) => {
+        if (
+          blog.querySelector(".blog-tag").textContent.trim() !==
+          "Career Insights"
+        ) {
+          blog.style.display = "none";
+        } else {
+          blog.style.display = "block";
+        }
+      });
+    }
+
+    function showSgInsights() {
+      blogs.forEach((blog) => {
+        if (
+          blog.querySelector(".blog-tag").textContent.trim() !== "SG Insights"
+        ) {
+          blog.style.display = "none";
+        } else {
+          blog.style.display = "block";
+        }
+      });
+    }
+  });
+</script>
+
+<!-- >>> END <<< -->

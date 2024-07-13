@@ -1,0 +1,64 @@
+<!-- >>> START <<< -->
+
+<!-- reader-article-card.ejs -->
+
+<div
+  id="articleContainer"
+  class="container"
+  style="font-size: 13px; min-height: 580px"
+>
+  <div class="row">
+    <!-- article posts -->
+    <% articles.forEach(article => { %> <% if (article.article_type !== "draft")
+    { %>
+    <div class="col-12 col-md-6 col-lg-4 writer-blog-card mt-2">
+      <div class="card h-100 rounded-4 text-center p-3">
+        <% if (article.article_tag) { %>
+        <p
+          class="badge mb-1 w-auto blog-tag"
+          style="background-color: #24474b; display: inline-block"
+        >
+          <%= article.article_tag %>
+        </p>
+        <% } %>
+
+        <p class="opacity-50 mb-2" style="font-size: 12px">
+          By <%= article.author_name %> • <%= article.updated_at %>
+        </p>
+
+        <% if (article.article_image) { %>
+        <div class="position-relative" style="height: 150px">
+          <img
+            src="<%= article.article_image %>"
+            class="img-fluid mb-3 object-fit-cover rounded-2"
+            style="height: 100%; width: 100%"
+            alt="Article Image"
+          />
+        </div>
+        <% } %>
+
+        <p class="m-0 pt-2" style="font-size: 12px"><%= article.article_views %> Views</p>
+        <h5 class="mb-0 my-2"><%= article.article_title %></h5>
+
+        <% if (article.article_content) { %> <% const contentWords =
+        article.article_content.split(' ').filter(word => word.trim() !== '');
+        const previewContent = contentWords.slice(0, 20).join(' ') +
+        (contentWords.length > 20 ? '...' : ''); %>
+
+        <p><%= previewContent %></p>
+        <% } else { %>
+        <p>No content available</p>
+        <% } %>
+
+        <a href="/article/view/<%= article.article_id %>"
+          ><button class="rounded-pill px-3 py-1 mt-auto fw-medium">
+            Read
+          </button></a
+        >
+      </div>
+    </div>
+    <% } %> <% }); %>
+  </div>
+</div>
+
+<!-- >>> END <<< -->

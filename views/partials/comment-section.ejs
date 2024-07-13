@@ -1,0 +1,82 @@
+<!-- >>> START <<< -->
+
+<!-- comment-section.ejs -->
+
+<form method="post" action="/action/comment">
+  <div class="" style="color: #e6e6dd">
+    <div
+      class="commentSection d-flex flex-column rounded-4 mx-3 mb-3 p-4"
+      style="background-color: #1c3c40"
+    >
+      <input
+        type="hidden"
+        id="content_id"
+        name="content_id"
+        value="<%= blog_id ? blog_id : article_id %>"
+      />
+      <input
+        type="hidden"
+        id="comment_type"
+        name="comment_type"
+        value="<%= comment_type %>"
+      />
+
+      <div class="d-flex">
+        <div class="form-group">
+          <label for="comment_name" class="fw-semibold mb-3" style="color: #e6e6dd">
+            Name
+          </label>
+          <input
+            name="comment_name"
+            type="text"
+            class="form-control rounded-4 mb-3"
+            style="background-color: #e6e6dd; color: #365d5c"
+            id="comment_name"
+            placeholder="Enter your name"
+            value="<%= session && author_name ? author_name : '' %>"
+            required
+          />
+        </div>
+  
+        <div class="form-group w-100 ms-3">
+          <label for="content" class="fw-semibold mb-3" style="color: #e6e6dd">
+            Leave a comment about this blog!
+          </label>
+          <input
+            name="content"
+            type="text"
+            class="form-control rounded-4 mb-3"
+            style="background-color: #e6e6dd; color: #365d5c"
+            id="content"
+            placeholder="Enter a comment"
+            required
+          />
+        </div>
+      </div>
+
+      <div class="d-flex justify-content-end mb-3">
+        <button type="submit" class="rounded-pill px-3 mt-auto fw-medium">
+          Submit
+        </button>
+      </div>
+
+      <div class="d-flex flex-column">
+        <% if (comments.length > 0) { %> <% comments.forEach(comment => { %>
+        <hr />
+        <div
+          class="d-flex justify-content-between px-3 py-2 p-1 rounded-4 my-1 col-12"
+          style="color: #a6bcb8"
+        >
+          <% if (comment.comment_name) {%>
+            <p class="fw-semibold text-start col-2">By: <%= comment.comment_name %></p>
+          <%}%>
+          <p class="mb-0 col-7"><%= comment.content %></p>
+          <p class="mb-0 col-3 text-end"><%= comment.created_at %></p>
+        </div>
+        <% }); %> <% } %>
+      </div>
+    </div>
+  </div>
+</form>
+
+<!-- >>> END <<< -->

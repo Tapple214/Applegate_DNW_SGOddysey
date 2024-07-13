@@ -1,0 +1,46 @@
+<!-- >>> START <<< -->
+
+<!-- blog-container.ejs -->
+
+<div id="blogContainer" class="container" style="font-size: 13px">
+  <div class="row">
+    <!-- blogs -->
+    <% blogs.forEach(blog => { %>
+    <div class="col-12" style="margin-top: 20px">
+      <div
+        class="card h-100 rounded-4 text-center p-3 position-relative mx-auto"
+        style="height: 100px; overflow: hidden"
+      >
+        <p style="font-size: 12px"><%= blog.blog_views %> views</p>
+        <h5 class="mb-0 fw-bold" style="color: #24474b">
+          <%= blog.blog_title %>
+        </h5>
+        <p class="opacity-50 mb-2" style="font-size: 12px">
+          By <%= blog.author_name %>
+        </p>
+        <p><%= blog.blog_subtitle %></p>
+
+        <a
+          href="/blog/view/<%= blog.blog_id %>"
+          class="d-flex text-decoration-none justify-content-center"
+          style="z-index: 2"
+        >
+          <button
+            class="rounded-pill px-3 py-1 mt-auto fw-medium justify-content-start"
+          >
+            Visit
+          </button>
+        </a>
+
+        <img
+          src="/images/blog-edge.png"
+          class="object-fit-cover position-absolute top-0 start-0 w-100 h-100"
+          style="object-fit: cover; z-index: 1"
+        />
+      </div>
+    </div>
+    <% }); %>
+  </div>
+</div>
+
+<!-- >>> END <<< -->

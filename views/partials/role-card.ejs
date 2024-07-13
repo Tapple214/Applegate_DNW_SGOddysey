@@ -1,0 +1,61 @@
+<!-- >>> START <<< -->
+
+<!-- role-card.ejs -->
+
+<!-- CSS import -->
+<link rel="stylesheet" type="text/css" href="/main.css" />
+
+<!-- Card that redirects to role respective page -->
+<div class="col role-card rounded-4 m-3 mt-0 pb-4 text-center py-2" style="height: 530px">
+  <div class="card-body">
+    <% if (role === 'Reader') { %>
+    <h6 class="card-subtitle text-body-secondary text-start opacity-75">
+      As a...
+    </h6>
+    <% } else if (role === 'Author') { %>
+    <h6 class="card-subtitle text-body-secondary text-start opacity-75">
+      As an...
+    </h6>
+    <% } %>
+
+    <div class="p-3 d-inline-block rounded-circle">
+      <% if (role === 'Reader') { %>
+      <img
+        src="<%= image %>"
+        class="img-fluid"
+        style="
+          object-fit: cover;
+          height: 300px;
+          height: 100%;
+          width: 100%;
+          overflow: hidden;
+        "
+      />
+      <% } else if (role === 'Author') { %>
+      <img
+        src="<%= image %>"
+        class="img-fluid"
+        style="
+          object-fit: cover;
+          height: 300px;
+          height: 100%;
+          width: 100%;
+          overflow: hidden;
+        "
+      />
+      <% } %>
+    </div>
+
+    <h5 class="card-title fw-bold" style="color: #1c3c40"><%= role %></h5>
+
+    <p class="card-text pb-3"><%= description %></p>
+
+    <a href="<%= link %>">
+      <button class="rounded-pill px-3 py-1 mt-auto fw-medium">
+        Join now!
+      </button>
+    </a>
+  </div>
+</div>
+
+<!-- >>> END <<< -->

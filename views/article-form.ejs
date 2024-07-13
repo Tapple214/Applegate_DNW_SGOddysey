@@ -1,0 +1,408 @@
+<!-- >>> START <<< -->
+
+<!-- article-form.ejs -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Icon -->
+    <link rel="icon" type="image/x-icon" href="/images/logo.png">
+
+    <!-- Library import -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
+
+    <!-- CSS import -->
+    <link rel="stylesheet" type="text/css" href="/main.css" />
+
+    <!-- Internal style -->
+    <style>
+      .writer-blog-card {
+        margin-bottom: 25px;
+      }
+
+      .form-control-file,
+      .form-control[type="file"] {
+        color: #1c3c40;
+        background-color: #e6dfd1;
+        transition: background-color 0.3s, color 0.3s;
+      }
+
+      /* Default styles */
+      .form-control,
+      .form-control-file,
+      .form-select {
+        background-color: #f2f4f1;
+      }
+
+      /* Focus styles */
+      .form-control:focus,
+      .form-control-file:focus {
+        outline: 4px solid #365d5c;
+      }
+    </style>
+    <!-- Website title + logo -->
+    <title>SG Odyssey: Author</title>
+  </head>
+  <body>
+    <div class="w-100 d-flex">
+      <div class="w-75">
+        <a href="/author/main">
+          <button class="rounded-pill px-3 py-1 fw-medium m-3">Go back</button>
+        </a>
+      </div>
+
+      <div
+        class="d-flex flex-column justify-content-center align-items-end me-3 w-25 text-end"
+      >
+        <div class="d-flex align-items-center">
+          <p class="fw-semibold m-0 me-2 opacity-75" style="color: #365d5c">
+            Don't know where to start?
+          </p>
+
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="30"
+            height="30"
+            fill="currentColor"
+            class="bi bi-question-circle"
+            viewBox="0 0 16 16"
+            style="color: #1c3c40; cursor: pointer"
+            data-bs-toggle="modal"
+            data-bs-target="#promptModal"
+          >
+            <path
+              d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"
+            />
+            <path
+              d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286m1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94"
+            />
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal -->
+    <div
+      class="modal fade"
+      id="promptModal"
+      tabindex="-1"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1
+              class="modal-title fs-5 fw-bold"
+              id="exampleModalLabel"
+              style="color: #1c3c40"
+            >
+              Writing prompts
+            </h1>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <p>
+              What do you want to share with other students? Whether it's your
+              latest adventure, a helpful tip, or a cultural insight, we want to
+              hear your story! Here are some ideas to get you started:
+            </p>
+            <ul>
+              <li>Share a memorable experience you had in Singapore.</li>
+              <li>Offer advice on adjusting to life in a new country.</li>
+              <li>Write about a cultural event or festival you attended.</li>
+              <li>
+                Provide study tips or academic advice for fellow students.
+              </li>
+              <li>
+                Discuss challenges you've faced and how you overcame them.
+              </li>
+              <li>
+                Highlight your favorite places to visit or eat in Singapore.
+              </li>
+            </ul>
+            <p>
+              Your unique perspective is valuable to our community. Dive in and
+              start writing!
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Form -->
+    <div class="container mb-4">
+      <h1 class="fw-bold ms-3" style="color: #1c3c40">
+        <% if (formAction === 'edit') { %> Edit your
+        article <% } else { %> Write an article! <% } %>
+      </h1>
+
+      <form
+        action="<%= formAction === 'edit' ? '/article/edit/' + article_id : '/article/create' %>"
+        method="post"
+        class="container-fluid"
+        style="color: #1c3c40"
+        id="form"
+      >
+      <!-- creating or drafting -->
+      <input
+        type="hidden"
+        id="type"
+        name="type"
+        value=''
+      />
+
+        <% if (formAction === 'edit') { %>
+        <input
+          type="hidden"
+          id="article_id"
+          name="article_id"
+          value="<%= article_id %>"
+        />
+        <% } %>
+
+        <div class="form-group mb-4">
+          <label for="article_title" class="fw-semibold mb-2" style="color: #365d5c"
+            >Title</label
+          >
+          <input
+            name="article_title"
+            type="text"
+            class="form-control rounded-4"
+            style="background-color: #f2f4f1; color: #365d5c"
+            id="article_title"
+            placeholder="Enter article title"
+            value="<%= formAction === 'edit' ? article_title : '' %>"
+            required
+          />
+        </div>
+
+        <% if (formAction === 'edit') { %>
+        <div class="form-group mb-4">
+          <label for="article_image" class="fw-semibold mb-2" style="color: #365d5c"
+            >Uploaded image</label
+          >
+          <div class="mb-3">
+            <img id="current-image" src="<%= article_image %>" alt="Current Image" style="max-width: 100%; height: auto;" />
+          </div>
+        </div>
+        <% } else { %>
+        <div class="form-group mb-4">
+          <label for="article_image" class="fw-semibold mb-0" style="color: #365d5c"
+            >Upload Image</label
+          >
+          <p class="opacity-50" style="font-size: 12px;">Note: This cannot be edited! Also ensure to add a smaller file to ensure successful submission!</p>
+          <input
+            name="article_image"
+            type="file"
+            class="form-control"
+            style="background-color: #f2f4f1; color: #365d5c"
+            id="article_image"
+            accept="image/*"
+            onchange="onImageUpload(this.files)"
+            required
+          />
+        </div>
+        <% } %> 
+        
+        <div id="image-preview" class="mb-4"></div>
+        <input type="hidden" id="base64-image" name="base64_image" value="" />
+        
+        <% if (formAction !== 'edit') { %>
+          <div class="form-group mb-4">
+            <label for="article_tag" class="fw-semibold mb-2" style="color: #365d5c">Tag</label>
+            <select class="form-control rounded-4" id="article_tag" name="article_tag" style="background-color: #f2f4f1; color: #365d5c" required>
+              <option value="" selected>Select tag</option>
+              <option value="Self-Help">Self-Help</option>
+              <option value="Academic Tips">Academic Tips</option>
+              <option value="SG Stories">SG Stories</option>
+              <option value="Career Insights">Career Insights</option>
+              <option value="SG Insights">SG Insights</option>
+            </select>
+          </div>
+        <% } else { %>
+          <div class="form-group mb-4">
+            <label for="article_tag" class="fw-semibold mb-2" style="color: #365d5c">Tag</label>
+            <select class="form-control rounded-4" id="article_tag" name="article_tag" style="background-color: #f2f4f1; color: #365d5c">
+              <option value="Self-Help" <%= formAction === "edit" && (article_tag === 'Self-Help') ? 'selected' : '' %>>Self-Help</option>
+              <option value="Academic Tips" <%= formAction === "edit" && (article_tag === 'Academic Tips') ? 'selected' : '' %>>Academic Tips</option>
+              <option value="SG Stories" <%= formAction === "edit" && (article_tag === 'SG Stories') ? 'selected' : '' %>>SG Stories</option>
+              <option value="Career Insights" <%= formAction === "edit" && (article_tag === 'Career Insights') ? 'selected' : '' %>>Career Insights</option>
+              <option value="SG Insights" <%= formAction === "edit" && (article_tag === 'SG Insights') ? 'selected' : '' %>>SG Insights</option>
+            </select>
+          </div>
+        <% } %>
+        
+        <div class="form-group mb-4">
+          <label for="content" class="fw-semibold mb-2" style="color: #365d5c"
+            >Content</label
+          >
+          <textarea
+            name="article_content"
+            class="form-control rounded-4"
+            id="article_content"
+            rows="6"
+            style="background-color: #f2f4f1; color: #365d5c"
+            placeholder="Write your article content here"
+            required
+          >
+            <%= formAction === 'edit' ? article_content : '' %></textarea
+          >
+        </div>
+
+        <button type="submit" class="rounded-pill px-3 py-1 mt-auto fw-medium" onclick="handleButtonClick('publish')">
+          <% if (formAction === 'edit') { %> Publish <% } else { %> Publish <% } %>
+        </button>
+        
+        &nbsp; <span class="opacity-50"> or </span> &nbsp;
+        
+        <button type="submit" class="rounded-pill px-3 py-1 mt-auto fw-medium" onclick="handleButtonClick('draft')">
+          <% if (formAction === 'edit') { %> Save Changes <% } else { %> Save as Draft <% } %>
+        </button>
+      </form>
+    </div>
+
+    <script>
+       // Function to read a file as Data URL; converts input to base 64
+      function readFileAsDataURL(file) {
+          return new Promise((resolve, reject) => {
+              const reader = new FileReader();
+              reader.onload = () => resolve(reader.result);
+              reader.onerror = (error) => reject(error);
+              reader.readAsDataURL(file);
+          });
+      }
+
+      async function onImageUpload(acceptedFiles) {
+        // Enable only 1 input
+        if (acceptedFiles.length > 1) {
+            acceptedFiles = [acceptedFiles[0]]; 
+        }
+
+        // Clear previous image if new one is added
+        document.getElementById('image-preview').innerHTML = '';
+
+        try {
+            // Convert the compressed image to DataUrl for displaying and saving as base64
+            const base64 = await readFileAsDataURL(acceptedFiles[0]);
+
+            // Preview display
+            document.getElementById('image-preview').innerHTML = `
+                <img src="${base64}" alt="Preview" style="max-width: 100%; height: auto;" />
+            `;
+
+            // Save the Base64 image in a hidden input field
+            document.getElementById('base64-image').value = base64;
+        } catch (error) {
+            console.error('Error processing file:', error);
+        }
+      }
+
+      document.getElementById('form').addEventListener('submit', function(event) {
+          const formAction = '<%= formAction %>';
+          if (formAction !== 'edit') {
+              const base64Image = document.getElementById('base64-image').value;
+              if (!base64Image) {
+                  event.preventDefault();
+                  alert('Please upload an image.');
+              }
+          }
+      });
+
+      // Function to handle button clicks
+      function handleButtonClick(saveAs) {
+        const formAction = '<%= formAction %>'; 
+        const actionElement = document.getElementById('type');
+        
+        if (!actionElement) {
+          console.error('Element with ID "type" not found.');
+          return;
+        }
+        
+        if (formAction !== 'edit' && saveAs === 'draft') {
+            actionElement.value = 'draft';
+        } else if (formAction !== 'edit' && saveAs === 'publish') {
+            actionElement.value = 'publish';
+        } else if (formAction === 'edit' && saveAs === 'draft') {
+            actionElement.value = 'draft';
+        } else if (formAction === 'edit' && saveAs === 'publish') {
+            actionElement.value = 'publish';
+        }
+
+        if (formAction === 'edit') {
+          edit(actionElement.value);
+        }
+      }
+
+      function edit(type) {
+        const formAction = '<%= formAction %>';
+        const actionValue = document.getElementById("type").value;
+        if (!actionValue) {
+            event.preventDefault(); 
+        }
+
+        event.preventDefault(); 
+        const articleId = '<%= article_id %>';
+
+        const titleElement = document.getElementById('article_title');
+        const tagElement = document.getElementById('article_tag');
+        const contentElement = document.getElementById('article_content');
+
+        if (!titleElement || !tagElement || !contentElement) {
+            console.error('One or more form elements not found.');
+            return;
+        }
+        // Construct the body data object
+        const bodyData = {
+            type: type,
+            article_title: titleElement.value,
+            article_tag: tagElement.value,
+            article_content: contentElement.value
+        };
+
+        fetch(`/article/edit/${articleId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(bodyData)
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Update successful:', data);
+        })
+        .catch(error => {
+            console.error('Error updating post:', error);
+            window.location.href = '/author/main';
+        });
+    }
+    </script>
+
+    <!-- For modal -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+      integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"
+      integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>
+
+<!-- >>> END <<< -->
