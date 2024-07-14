@@ -78,7 +78,7 @@ router.post("/login", (req, res, next) => {
         // If the author_name exists, send an error message
         res.render("author-login.ejs", {
           errorMessage:
-            "Uh oh! Username already exists. Please choose another.",
+            "Uh oh! Username already exists. Please choose another to sign up or use it to login.",
         });
       } else {
         // Perform signup

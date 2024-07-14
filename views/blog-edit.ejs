@@ -45,8 +45,8 @@
       class="z-3 p-5 position-absolute end-0 h-100 rounded-4"
       style="width: 100%; background-color: #E6E6DD;"
     >
-      <form id="editBlogForm" class="mt-5">
-        <h2 class="fw-bold">Edit your blog!</h2>
+      <form id="editBlogForm" class="mt-4">
+        <h3 class="fw-bold">Edit your blog!</h3>
 
         <input
           type="hidden"
@@ -56,12 +56,29 @@
         />
 
         <div class="mb-3">
+          <label for="author_name" class="form-label mb-0">Change your username!</label>
+          <div id="authornameHelp" class="form-text">
+            Note: This is what you will use to login as your 'username', password will remain the same!
+          </div>
+          <input
+            type="text"
+            class="form-control"
+            id="author_name"
+            name="author_name"
+            value="<%= author.author_name ? author.author_name : '' %>"
+            aria-describedby="authornameHelp"
+            required
+          />
+        </div>
+
+        <div class="mb-3">
           <label for="blog_title" class="form-label">Rename your blog here!</label>
           <input
             type="text"
             class="form-control"
             id="blog_title"
             name="blog_title"
+            value="<%= blog.blog_title ? blog.blog_title : '' %>"
             aria-describedby="authornameHelp"
             required
           />
@@ -73,15 +90,19 @@
             class="form-control"
             id="blog_subtitle"
             name="blog_subtitle"
+            value="<%= blog.blog_subtitle ? blog.blog_subtitle : '' %>"
+            required
           />
         </div>
 
-        <button
+        <div class="w-100 d-flex justify-content-end">
+          <button
           type="submit"
           class="rounded-pill px-3 py-1 mt-auto fw-medium"
         >
           All done!
         </button>
+        </div>
       </form>
 
       <img

@@ -86,29 +86,33 @@ router.get("/view/:blog_id", (req, res, next) => {
  * @desc Display the form for editing a blog post
  */
 router.get("/edit", requireLogin, (req, res, next) => {
-  const author_id = req.session.author_id;
+  const { author_id, author_name } = req.session;
 
-  const query =
-    "SELECT * FROM blog WHERE author_id = ?";
+  const blogQuery = "SELECT * FROM blog WHERE author_id = ? AND author_name = ?;";
+  const authorQuery = "SELECT * FROM author WHERE author_id = ? AND author_name = ?;";
 
-  db.get(query, [author_id], (err, row) => {
+  db.get(blogQuery, [author_id, author_name], (err, blogRow) => {
     if (err) {
-      next(err);
-    } else {
-      if (!row) {
-        res
-          .status(404)
-          .send(
-            "blog post not found or you do not have permission to edit it"
-          );
-        return;
+      return next(err);
+    }
+    if (!blogRow) {
+      return res.status(404).send("Blog post not found or you do not have permission to edit it.");
+    }
+
+    db.get(authorQuery, [author_id, author_name], (err, authorRow) => {
+      if (err) {
+        return next(err);
+      }
+      if (!authorRow) {
+        return res.status(404).send("Author not found.");
       }
 
       res.render("blog-edit.ejs", {
         session: req.session,
-        blog: row,
+        blog: blogRow,
+        author: authorRow
       });
-    }
+    });
   });
 });
 

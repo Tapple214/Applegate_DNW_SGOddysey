@@ -62,6 +62,18 @@
           View
         </button></a
       >
+
+      <button
+      class="rounded-pill px-3 fw-medium delete-blog-btn ms-1"
+      style="
+        background-color: #dc6a61;
+        border: 2px solid #dc6a61;
+        color: #e6dfd1;
+      "
+      data-blog-id="<%= article.article_id %>"
+    >
+      Delete
+    </button>
     </div>
     <% } else { %>
     <div class="mt-auto mb-1 d-flex justify-content-end">

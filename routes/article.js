@@ -296,7 +296,7 @@ router.delete("/delete/:article_id", requireLogin, (req, res, next) => {
   // Prepare SQL statement for deleting a blog post
   const query = `
       DELETE FROM article
-      WHERE article_id = ? AND author_id = ? AND article_type = 'draft'
+      WHERE article_id = ? AND author_id = ?
     `;
 
   // Execute the SQL statement
