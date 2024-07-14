@@ -289,8 +289,7 @@ router.put("/edit/:article_id", requireLogin, async (req, res, next) => {
 
 // --- DELETING ARTICLES ---
 
-
-router.get("/delete/:article_id", requireLogin, (req, res) => {
+router.post("/delete/:article_id", requireLogin, (req, res) => {
   const {article_id} = req.params;
   const {author_id } = req.session;
 

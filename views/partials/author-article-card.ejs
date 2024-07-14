@@ -78,7 +78,7 @@
         </a>
         <% } %>
 
-        <a href="/article/delete/<%= article.article_id %>">
+        <form action="/article/delete/<%= article.article_id %>" method="POST">
           <button
           class="rounded-pill px-3 fw-medium delete-blog-btn ms-1"
           style="
@@ -90,7 +90,7 @@
         >
           Delete
         </button>
-        </a>
+        </form>
         
       </div>
       

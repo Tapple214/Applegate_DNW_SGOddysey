@@ -57,7 +57,7 @@ CREATE TABLE IF NOT EXISTS articleComment (
     content TEXT NOT NULL,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     article_id INTEGER,
-    FOREIGN KEY (article_id) REFERENCES article(article_id)
+    FOREIGN KEY (article_id) REFERENCES article(article_id) ON DELETE CASCADE
 );
 
 -- Table for article's likes/dislikes 
@@ -76,7 +76,7 @@ CREATE TABLE IF NOT EXISTS articleFeedback (
     dislike_count INTEGER DEFAULT 0,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     article_id INTEGER,
-    FOREIGN KEY (article_id) REFERENCES article(article_id)
+    FOREIGN KEY (article_id) REFERENCES article(article_id) ON DELETE CASCADE
 );
 
 COMMIT;
