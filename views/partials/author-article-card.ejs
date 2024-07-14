@@ -3,106 +3,99 @@
 <!-- author-article-card.ejs -->
 
 <% articles.forEach(article => { %>
-<div class="col-12 col-md-6 col-lg-4 writer-blog-card">
-  <div class="article-card h-100 rounded-4 text-center p-2">
-    <% if (article.article_type === 'publish') { %>
-    <p
-      class="blog-status mb-0 rounded-4 mb-2"
-      style="background-color: #84a19b"
-    >
-      Published
-    </p>
-    <% } else { %>
-    <p
-      class="blog-status mb-0 rounded-4 mb-2"
-      style="background-color: #e6e6dd; color: #24474b"
-    >
-      Drafted
-    </p>
-    <% } %> <% if (article.article_tag) { %>
-    <p
-      class="badge mb-1 w-auto"
-      style="background-color: #24474b; display: inline-block"
-    >
-      <%= article.article_tag %>
-    </p>
-    <% } %>
-
-    <p class="opacity-50 mb-2" style="font-size: 12px">
-      By <%= article.author_name %> • <%= article.updated_at %>
-    </p>
-
-    <% if (article.article_image) { %>
-    <div class="position-relative" style="height: 150px">
-      <img
-        src="<%= article.article_image %>"
-        class="img-fluid mb-3 object-fit-cover rounded-2"
-        style="height: 100%; width: 100%"
-        alt="Article Image"
-      />
-    </div>
-    <% } %>
-
-    <h5 class="mb-0 my-2 fw-bold" style="color: #24474b">
-      <%= article.article_title %>
-    </h5>
-
-    <% if (article.article_content) { %> <% const contentWords =
-    article.article_content.split(' ').filter(word => word.trim() !== ''); const
-    previewContent = contentWords.slice(0, 20).join(' ') + (contentWords.length
-    > 20 ? '...' : ''); %>
-
-    <p><%= previewContent %></p>
-    <% } else { %>
-    <p>No content available</p>
-    <% } %> <% if (article.article_type === 'publish') { %>
-    <div class="mt-auto mb-1 d-flex justify-content-end">
-      <a href="/article/view/<%= article.article_id %>"
-        ><button class="rounded-pill px-3 py-1 fw-medium border-0">
-          View
-        </button></a
+  <div class="col-12 col-md-6 col-lg-4 writer-blog-card">
+    <div class="article-card h-100 rounded-4 text-center p-2 d-flex flex-column pb-3">
+      <% if (article.article_type === 'publish') { %>
+      <p
+        class="blog-status mb-0 rounded-4 mb-2"
+        style="background-color: #84a19b"
       >
-
-      <button
-      class="rounded-pill px-3 fw-medium delete-blog-btn ms-1"
-      style="
-        background-color: #dc6a61;
-        border: 2px solid #dc6a61;
-        color: #e6dfd1;
-      "
-      data-blog-id="<%= article.article_id %>"
-    >
-      Delete
-    </button>
-    </div>
-    <% } else { %>
-    <div class="mt-auto mb-1 d-flex justify-content-end">
-      <a href="/article/view/draft/<%= article.article_id %>"
-        ><button class="rounded-pill px-3 py-1 fw-medium border-0">
-          View
-        </button></a
+        Published
+      </p>
+      <% } else { %>
+      <p
+        class="blog-status mb-0 rounded-4 mb-2"
+        style="background-color: #e6e6dd; color: #24474b"
       >
+        Drafted
+      </p>
+      <% } %> <% if (article.article_tag) { %>
+      <p
+        class="badge mb-1 w-auto"
+        style="background-color: #24474b; display: inline-block"
+      >
+        <%= article.article_tag %>
+      </p>
+      <% } %>
+  
+      <p class="opacity-50 mb-2" style="font-size: 12px">
+        By <%= article.author_name %> • <%= article.updated_at %>
+      </p>
+  
+      <% if (article.article_image) { %>
+      <div class="position-relative" style="height: 150px">
+        <img
+          src="<%= article.article_image %>"
+          class="img-fluid mb-3 object-fit-cover rounded-2"
+          style="height: 100%; width: 100%"
+          alt="Article Image"
+        />
+      </div>
+      <% } %>
+  
+      <h5 class="mb-0 my-2 fw-bold" style="color: #24474b">
+        <%= article.article_title %>
+      </h5>
+  
+      <% if (article.article_content) { %> <% const contentWords =
+      article.article_content.split(' ').filter(word => word.trim() !== ''); const
+      previewContent = contentWords.slice(0, 20).join(' ') + (contentWords.length
+      > 20 ? '...' : ''); %>
+  
+      <p><%= previewContent %></p>
+      <% } else { %>
+      <p>No content available</p>
+      <% } %> 
 
-      <a href="/article/edit/<%= article.article_id %>">
-        <button class="rounded-pill px-3 py-1 fw-medium border-0 ms-1">
-          Edit
+      <div class="mt-auto d-flex justify-content-end align-items-center">
+        <% if (article.article_type === 'publish') { %>
+        <a href="/article/view/<%= article.article_id %>"
+          ><button class="rounded-pill px-3 py-1 fw-medium border-0">
+            View
+          </button></a
+        >
+        <% } else { %>
+        <a href="/article/view/draft/<%= article.article_id %>"
+          ><button class="rounded-pill px-3 py-1 fw-medium border-0">
+            View
+          </button></a
+        >
+
+        <a href="/article/edit/<%= article.article_id %>">
+          <button class="rounded-pill px-3 py-1 fw-medium border-0 ms-1">
+            Edit
+          </button>
+        </a>
+        <% } %>
+
+        <a href="/article/delete/<%= article.article_id %>">
+          <button
+          class="rounded-pill px-3 fw-medium delete-blog-btn ms-1"
+          style="
+            background-color: #dc6a61;
+            border: 2px solid #dc6a61;
+            color: #e6dfd1;
+          "
+          data-article-id="<%= article.article_id %>"
+        >
+          Delete
         </button>
-      </a>
-      <button
-        class="rounded-pill px-3 fw-medium delete-blog-btn ms-1"
-        style="
-          background-color: #dc6a61;
-          border: 2px solid #dc6a61;
-          color: #e6dfd1;
-        "
-        data-blog-id="<%= article.article_id %>"
-      >
-        Delete
-      </button>
+        </a>
+        
+      </div>
+      
     </div>
-    <% } %>
   </div>
-</div>
-<% }); %>
+  <% }); %>
 
 <!-- >>> END <<< -->

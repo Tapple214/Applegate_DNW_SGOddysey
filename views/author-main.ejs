@@ -132,35 +132,6 @@
 
     <script>
       document.addEventListener("DOMContentLoaded", function () {
-        const deleteButtons = document.querySelectorAll(".delete-blog-btn");
-
-        deleteButtons.forEach((button) => {
-          button.addEventListener("click", function (event) {
-            event.preventDefault(); // Prevent default link behavior
-
-            const blogId = this.getAttribute("data-blog-id");
-
-            // Send an AJAX request to delete the blog
-            fetch(`/article/delete/${blogId}`, {
-              method: "DELETE",
-              headers: {
-                "Content-Type": "application/json",
-              },
-            })
-              .then((response) => {
-                if (response.ok) {
-                  // If deletion is successful, remove the blog card from the DOM
-                  this.closest(".writer-blog-card").remove();
-                } else {
-                  console.error("Error deleting blog:", response.statusText);
-                }
-              })
-              .catch((error) => console.error("Error deleting blog:", error));
-          });
-        });
-      });
-
-      document.addEventListener("DOMContentLoaded", function () {
         const allButton = document.querySelector(".filter-all");
         const publishedButton = document.querySelector(".filter-published");
         const draftButton = document.querySelector(".filter-draft");

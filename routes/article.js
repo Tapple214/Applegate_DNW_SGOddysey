@@ -289,33 +289,40 @@ router.put("/edit/:article_id", requireLogin, async (req, res, next) => {
 
 // --- DELETING ARTICLES ---
 
-router.delete("/delete/:article_id", requireLogin, (req, res, next) => {
-  const article_id = req.params.article_id;
-  const author_id = req.session.author_id;
 
-  // Prepare SQL statement for deleting a blog post
+router.get("/delete/:article_id", requireLogin, (req, res) => {
+  const {article_id} = req.params;
+  const {author_id } = req.session;
+
+  if (!article_id || !author_id ) {
+    console.error("Missing required parameters for deletion.");
+    res.status(400).json({ message: "Bad Request: Missing required parameters" });
+    return;
+  }
+  
   const query = `
-      DELETE FROM article
-      WHERE article_id = ? AND author_id = ?
-    `;
-
+    DELETE FROM article
+    WHERE article_id = ? AND author_id = ?;
+  `;
+  
   // Execute the SQL statement
   db.run(query, [article_id, author_id], function (err) {
     if (err) {
       console.error("Error deleting article post:", err);
       res.status(500).json({ message: "Internal server error" });
     } else if (this.changes > 0) {
-      // If one or more rows were deleted (this.changes reflects the number of affected rows)
-      res.status(200).json({ message: "article post deleted successfully" });
+      res.redirect('back')
+
     } else {
       // If no rows were deleted (likely due to permission or not found)
+      console.warn("Article post not found or you do not have permission to delete it");
       res.status(404).json({
-        message:
-          "article post not found or you do not have permission to delete it",
+        message: "Article post not found or you do not have permission to delete it",
       });
     }
   });
 });
+  
 
 module.exports = router;
 
