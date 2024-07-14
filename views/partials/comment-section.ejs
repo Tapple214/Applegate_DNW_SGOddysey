@@ -12,7 +12,7 @@
         type="hidden"
         id="content_id"
         name="content_id"
-        value="<%= blog_id ? blog_id : article_id %>"
+        value="<%= comment_type === 'blog' ? blog_id : article_id %>"
       />
       <input
         type="hidden"
