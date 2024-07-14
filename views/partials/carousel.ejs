@@ -38,7 +38,7 @@
               Want to have your own <br />
               blog?
             </h3>
-            <a href="/author/login">
+            <a href="<%= session && author_id ? '/author/main' : '/author/login' %>">
               <button class="rounded-pill px-3 py-1 mt-auto fw-medium">
                 Join our community!
               </button>

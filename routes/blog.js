@@ -120,32 +120,55 @@ router.get("/edit", requireLogin, (req, res, next) => {
  * @desc Endpoint for editing blog
  */
 router.put("/edit", requireLogin, (req, res, next) => {
-  const { blog_id, blog_title, blog_subtitle } = req.body;
+  const { blog_id, author_name, blog_title, blog_subtitle } = req.body;
   const author_id = req.session.author_id;
-  const author_name = req.session.author_name;
+  const session_author_name = req.session.author_name;
+  
+  const blogQuery = `UPDATE blog 
+                     SET blog_title = ?, blog_subtitle = ?, author_name = ?
+                     WHERE blog_id = ? AND author_id = ?`;
 
-  const query = `UPDATE blog 
-                  SET blog_title = ?, blog_subtitle = ?
-                  WHERE blog_id = ? AND author_id = ? AND author_name = ?`;
-
-  const query_parameters = [
+  const blogQueryParameters = [
     blog_title,
     blog_subtitle,
+    author_name,
     blog_id,
     author_id,
-    author_name,
   ];
 
-  db.run(query, query_parameters, (err, row) => {
+  db.run(blogQuery, blogQueryParameters, (err) => {
     if (err) {
       console.error("Database error:", err);
       next(err);
     } else {
-      
-      res.redirect("/author/main");
+      // If the author name has changed, update it in the author table
+      if (author_name !== session_author_name) {
+        const authorQuery = `UPDATE author
+                             SET author_name = ?
+                             WHERE author_id = ?`;
+
+        const authorQueryParameters = [
+          author_name,
+          author_id,
+        ];
+
+        db.run(authorQuery, authorQueryParameters, (err) => {
+          if (err) {
+            console.error("Database error:", err);
+            next(err);
+          } else {
+            // Update the session author name
+            req.session.author_name = author_name;
+            res.redirect("/author/main");
+          }
+        });
+      } else {
+        res.redirect("/author/main");
+      }
     }
   });
 });
+
 
 module.exports = router;
 

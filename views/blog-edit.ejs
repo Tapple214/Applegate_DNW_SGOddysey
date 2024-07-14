@@ -117,6 +117,7 @@
     document.getElementById("editBlogForm").addEventListener("submit", function (event) {
       event.preventDefault(); // Prevent form submission
 
+      const author_name = document.getElementById("author_name").value;
       const blogId = document.getElementById("blog_id").value;
       const titleElement = document.getElementById('blog_title');
       const subtitleElement = document.getElementById('blog_subtitle');
@@ -127,6 +128,7 @@
       }
 
       const bodyData = {
+        author_name: author_name,
         blog_id: blogId,
         blog_title: titleElement.value,
         blog_subtitle: subtitleElement.value

@@ -152,75 +152,88 @@ router.get("/logout", requireLogin, (req, res) => {
  */
 router.get("/main", requireLogin, (req, res, next) => {
   const author_id = req.session.author_id;
-  const author_name = req.session.author_name;
+  const author_name_query = `SELECT author_name FROM author WHERE author_id = ?;`;
 
-  // Query to fetch blog data for the current author
-  const blogQuery =
-    "SELECT * FROM blog WHERE author_id = ? AND author_name = ?;";
-
-  db.all(blogQuery, [author_id, author_name], (err, blogRow) => {
+  // First, fetch the author's name using the author_id
+  db.get(author_name_query, [author_id], (err, authorRow) => {
     if (err) {
       return next(err);
     }
-    // Check if author has any blog entries
-    const blog = blogRow.length > 0 ? blogRow[0] : null;
 
-    // Fetch articles data for the current author
-    const articleQuery =
-      "SELECT * FROM article WHERE author_id = ? AND (article_type = 'publish' OR article_type = 'draft') ORDER BY updated_at DESC";
+    if (!authorRow) {
+      return res.status(404).send("Author not found");
+    }
 
-    db.all(articleQuery, [author_id], (err, articleRows) => {
+    const author_name = authorRow.author_name;
+
+    // Query to fetch blog data for the current author
+    const blogQuery = "SELECT * FROM blog WHERE author_id = ? AND author_name = ?;";
+
+    db.all(blogQuery, [author_id, author_name], (err, blogRow) => {
       if (err) {
         return next(err);
       }
 
-      // Convert article images to base64 if they are stored as binary
-      const articles = articleRows.map((article) => {
-        if (
-          article.article_image &&
-          typeof article.article_image === "object"
-        ) {
-          article.article_image = Buffer.from(article.article_image).toString(
-            "base64"
-          );
-        }
-        return article;
-      });
+      // Check if author has any blog entries
+      const blog = blogRow.length > 0 ? blogRow[0] : null;
 
-      // Query to fetch author data for the current author
-      const authorQuery =
-        "SELECT * FROM author WHERE author_id = ? AND author_name = ?;";
+      // Fetch articles data for the current author
+      const articleQuery =
+        "SELECT * FROM article WHERE author_id = ? AND (article_type = 'publish' OR article_type = 'draft') ORDER BY updated_at DESC";
 
-      db.all(authorQuery, [author_id, author_name], (err, authorRow) => {
+      db.all(articleQuery, [author_id], (err, articleRows) => {
         if (err) {
           return next(err);
         }
 
-        // Take index[0] since db.all returns an array
-        const author = authorRow.length > 0 ? authorRow[0] : null;
+        // Convert article images to base64 if they are stored as binary
+        const articles = articleRows.map((article) => {
+          if (
+            article.article_image &&
+            typeof article.article_image === "object"
+          ) {
+            article.article_image = Buffer.from(article.article_image).toString(
+              "base64"
+            );
+          }
+          return article;
+        });
 
-        // Count how many articles are published or drafted; used for display purposes
-        const publishCount = articles.filter(
-          (article) => article.article_type === "publish"
-        ).length;
-        const draftCount = articles.filter(
-          (article) => article.article_type === "draft"
-        ).length;
+        // Query to fetch author data for the current author
+        const authorQuery = "SELECT * FROM author WHERE author_id = ? AND author_name = ?;";
 
-        res.render("author-main.ejs", {
-          session: req.session,
-          author_id: req.session.author_id,
-          author_name: req.session.author_name,
-          blog: blog,
-          author: author,
-          articles: articles,
-          publishCount: publishCount,
-          draftCount: draftCount,
+        db.all(authorQuery, [author_id, author_name], (err, authorRow) => {
+          if (err) {
+            return next(err);
+          }
+
+          // Take index[0] since db.all returns an array
+          const author = authorRow.length > 0 ? authorRow[0] : null;
+
+          // Count how many articles are published or drafted; used for display purposes
+          const publishCount = articles.filter(
+            (article) => article.article_type === "publish"
+          ).length;
+          const draftCount = articles.filter(
+            (article) => article.article_type === "draft"
+          ).length;
+
+          res.render("author-main.ejs", {
+            session: req.session,
+            author_id: req.session.author_id,
+            author_name: author_name,
+            blog: blog,
+            author: author,
+            articles: articles,
+            publishCount: publishCount,
+            draftCount: draftCount,
+          });
         });
       });
     });
   });
 });
+
 
 module.exports = router;
 
