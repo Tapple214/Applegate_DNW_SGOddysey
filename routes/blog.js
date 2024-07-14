@@ -123,7 +123,7 @@ router.put("/edit", requireLogin, (req, res, next) => {
   const { blog_id, author_name, blog_title, blog_subtitle } = req.body;
   const author_id = req.session.author_id;
   const session_author_name = req.session.author_name;
-  
+
   const blogQuery = `UPDATE blog 
                      SET blog_title = ?, blog_subtitle = ?, author_name = ?
                      WHERE blog_id = ? AND author_id = ?`;
@@ -141,9 +141,13 @@ router.put("/edit", requireLogin, (req, res, next) => {
       console.error("Database error:", err);
       next(err);
     } else {
-      // If the author name has changed, update it in the author table
+      // If the author name has changed, update it in the author and article tables
       if (author_name !== session_author_name) {
         const authorQuery = `UPDATE author
+                             SET author_name = ?
+                             WHERE author_id = ?`;
+
+        const articleQuery = `UPDATE article
                              SET author_name = ?
                              WHERE author_id = ?`;
 
@@ -157,9 +161,16 @@ router.put("/edit", requireLogin, (req, res, next) => {
             console.error("Database error:", err);
             next(err);
           } else {
-            // Update the session author name
-            req.session.author_name = author_name;
-            res.redirect("/author/main");
+            db.run(articleQuery, authorQueryParameters, (err) => {
+              if (err) {
+                console.error("Database error:", err);
+                next(err);
+              } else {
+                // Update the session author name
+                req.session.author_name = author_name;
+                res.redirect("/author/main");
+              }
+            });
           }
         });
       } else {
@@ -168,7 +179,6 @@ router.put("/edit", requireLogin, (req, res, next) => {
     }
   });
 });
-
 
 module.exports = router;
 
