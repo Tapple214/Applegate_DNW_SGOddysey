@@ -213,7 +213,6 @@
             id="article_image"
             accept="image/*"
             onchange="onImageUpload(this.files)"
-            required
           />
         </div>
         <% } %> 
@@ -312,14 +311,8 @@
       }
 
       document.getElementById('form').addEventListener('submit', function(event) {
+          // Remove image validation since it's now optional
           const formAction = '<%= formAction %>';
-          if (formAction !== 'edit') {
-              const base64Image = document.getElementById('base64-image').value;
-              if (!base64Image) {
-                  event.preventDefault();
-                  alert('Please upload an image.');
-              }
-          }
       });
 
       // Function to handle button clicks
